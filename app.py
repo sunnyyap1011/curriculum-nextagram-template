@@ -9,6 +9,7 @@ web_dir = os.path.join(os.path.dirname(
 
 app = Flask('NEXTAGRAM', root_path=web_dir)
 
+app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 csrf = CSRFProtect(app)
 
 if os.getenv('FLASK_ENV') == 'production':
