@@ -25,7 +25,7 @@ def create():
         return redirect(url_for('users.new'))
     else:
         flash(f'{u.errors[0]}', 'danger')
-        return redirect(url_for('users.new'))
+        return render_template('users/new.html')
 
 
 @users_blueprint.route('/<username>', methods=["GET"])
