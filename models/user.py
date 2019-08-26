@@ -11,12 +11,16 @@ class User(BaseModel):
     def validate(self):
         duplicate_users = User.get_or_none(User.username == self.username)
         duplicate_email = User.get_or_none(User.email == self.email)
+        email_regex = "/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/"
         password_regex = "^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,15}$"
+
 
         if duplicate_users:
             self.errors.append('Username exists')
         if duplicate_email:
             self.errors.append('Email exists')
+        if not re.match(email_regex, self.email):
+            self.errors.append('Please enter a valid email address')
         if not re.match(password_regex, self.password):
             self.errors.append('Password must be at least 6 characters, no more than 15 characters, and must include at least one upper case letter, one lower case letter, and one numeric digit.')
         if not self.id:
