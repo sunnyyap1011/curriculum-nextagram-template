@@ -1,9 +1,10 @@
 from models.base_model import BaseModel
 from werkzeug.security import generate_password_hash
+from flask_login import UserMixin
 import peewee as pw
 import re
 
-class User(BaseModel):
+class User(BaseModel, UserMixin):
     username = pw.CharField(unique=True)
     email = pw.CharField(unique=True)
     password = pw.CharField()
