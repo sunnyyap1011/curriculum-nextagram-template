@@ -12,7 +12,7 @@ class User(BaseModel, UserMixin):
     def validate(self):
         duplicate_users = User.get_or_none(User.username == self.username)
         duplicate_email = User.get_or_none(User.email == self.email)
-        email_regex = "/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/"
+        email_regex = "^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$"
         password_regex = "^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,15}$"
 
 
