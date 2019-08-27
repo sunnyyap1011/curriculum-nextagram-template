@@ -16,6 +16,20 @@ bundles = {
         filters='cssmin',
         output='gen/home.%(version)s.css'),
 
+    'error_js': Bundle(
+        'js/vendor/jquery-3.3.1.js',
+        'js/vendor/popper.js',
+        'js/vendor/bootstrap-4.1.3.js',
+        'js/error.js',
+        filters='jsmin',
+        output='gen/error.%(version)s.js'),
+
+    'error_css': Bundle(
+        'css/vendor/bootstrap-4.1.3.css',
+        'css/error.css',
+        filters='cssmin',
+        output='gen/error.%(version)s.css'),
+
     # 'admin_js': Bundle(
     #     'js/lib/jquery-1.10.2.js',
     #     'js/lib/Chart.js',
