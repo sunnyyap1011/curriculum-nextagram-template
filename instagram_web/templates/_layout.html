@@ -20,25 +20,50 @@
 </head>
 
 <body>
-  {% if current_user.is_authenticated %}
-    <a href="/sessions/logout">Log Out</a>
-  {% endif %}
-  {% with messages = get_flashed_messages(with_categories=true) %}
-    {% if messages %}
-      {% for category, message in messages %}
-      <div class="alert alert-{{category}} alert-dismissable" data-auto-dismiss role="alert">
-        {{message}}
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      {% endfor %}
-    {% endif %}
-  {% endwith %}
+  <nav class="navbar navbar-dark bg-dark mb-4">
+    <div class="d-flex">
+      <a class="navbar-brand font-weight-bold" href="/">Nextagram</a>
+      {% if current_user.is_authenticated %}
+        <div class="nav-item">
+          <a class="nav-link text-info font-weight-bold" href="/users/{{ current_user.username }}">Hi, {{ current_user.username }}</a>
+        </div>
+        <div class="nav-item">
+          <a class="nav-link text-white-50" href="/users/{{ current_user.id }}/edit">Edit</a>
+        </div>
+        <div class="nav-item">
+          <a class="nav-link text-white-50" href="/users/logout">Log Out</a>
+        </div>
+        {% else %}
+        <div class="nav-item">
+          <a class="nav-link text-white-50" href="/users/login">Login</a>
+        </div>
+        <div class="nav-item">
+          <a class="nav-link text-white-50" href="/users/sign_up">Sign Up</a>
+        </div>
+        {% endif %}
+    </div>
+
+  </nav>
+
   <div class="container">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    {% for category, message in messages %}
+    <div class="alert alert-{{category}} alert-dismissable" data-auto-dismiss role="alert">
+      {{message}}
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
+    <div class="container">
       {% block content %}
       {% endblock %}
+    </div>
   </div>
+
 </body>
 
 </html>
