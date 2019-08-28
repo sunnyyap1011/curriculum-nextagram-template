@@ -3,7 +3,9 @@ from app import login_manager
 from flask_login import login_user, logout_user, login_required, current_user
 from werkzeug.security import check_password_hash
 from models.user import User
-
+from app import s3
+import os
+# from static/images import profile-placeholder
 
 
 users_blueprint = Blueprint('users',
@@ -46,7 +48,12 @@ def index():
 @users_blueprint.route('/<id>/edit', methods=['GET'])
 @login_required
 def edit(id):
-    return render_template('users/edit.html', id=current_user.id)
+    filename = current_user.profile_picture
+    if filename:
+        url = f"{os.environ.get('S3_LOCATION')}{filename}"
+    else:
+        url = "https://www.flynz.co.nz/wp-content/uploads/profile-placeholder.png"
+    return render_template('users/edit.html', id=current_user.id, url=url)
 
 
 @users_blueprint.route('/<id>', methods=['POST'])
@@ -70,7 +77,7 @@ def update(id):
         if new_username != user.username:
             user.username = new_username
 
-        if current_password and new_password:
+        if current_password or new_password:
             if check_password_hash(user.password, current_password):
                 user.password = new_password
 
@@ -85,15 +92,41 @@ def update(id):
             flash(f"{user.errors[0]}", 'danger')
             return redirect(url_for('users.edit', id=id))
 
-
-
     else:
         return redirect(url_for('users.login'))
 
     return redirect(url_for('users.show', username=user.username))
 
 
-
 @login_manager.user_loader
 def load_user(user_id):
     return User.get_by_id(user_id)
+
+
+@users_blueprint.route('/upload_img', methods=['POST'])
+@login_required
+def upload_img():
+    file = request.files.get('image')
+    
+    if file:
+        try:
+            s3.upload_fileobj(
+                file,
+                os.environ.get('S3_BUCKET'),
+                file.filename,
+                ExtraArgs={
+                    "ACL": 'public-read',
+                    "ContentType": file.content_type
+                }
+            )
+            User.update(profile_picture=file.filename).where(User.id==current_user.id).execute()
+            flash("Profile picture successfully updated", 'success')
+            return redirect(url_for('users.edit', id=current_user.id))
+
+        except Exception as e:
+            flash(f"Something Happened: {e} ", 'danger')
+            return render_template('users/edit.html', id=current_user.id)
+
+    else:
+        flash("Please select a picture to upload", 'danger')
+        return redirect(url_for('users.edit', id=current_user.id))

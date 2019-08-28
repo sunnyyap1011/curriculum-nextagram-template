@@ -4,6 +4,9 @@ from flask import Flask
 from flask_wtf.csrf import CSRFProtect
 from flask_login import LoginManager
 from models.base_model import db
+from config import Config
+import boto3, botocore
+
 
 web_dir = os.path.join(os.path.dirname(
     os.path.abspath(__file__)), 'instagram_web')
@@ -16,6 +19,12 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 
 csrf = CSRFProtect(app)
+
+s3 = boto3.client(
+   "s3",
+   aws_access_key_id=Config.S3_KEY,
+   aws_secret_access_key=Config.S3_SECRET
+)
 
 if os.getenv('FLASK_ENV') == 'production':
     app.config.from_object("config.ProductionConfig")
