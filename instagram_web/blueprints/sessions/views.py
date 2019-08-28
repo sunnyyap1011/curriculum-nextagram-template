@@ -30,17 +30,17 @@ def create():
             return redirect(url_for('users.show', username=user.username))
         else:
             flash('Incorrect Password', 'danger')
-            return render_template('sessions/new.html')
+            return redirect(url_for('users.login'))
 
     else:
         flash('Username does not exist', 'danger')
-        return render_template('sessions/new.html')
+        return redirect(url_for('users.login'))
 
 
     return render_template('sessions/new.html')
 
 
-@users_blueprint.route('/logout')
+@users_blueprint.route('/logout', methods=['POST'])
 @login_required
 def destroy():
     logout_user()
