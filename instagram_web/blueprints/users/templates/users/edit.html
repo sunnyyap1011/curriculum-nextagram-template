@@ -1,0 +1,30 @@
+{% extends "_layout.html" %}
+{% block content %}
+
+{% if current_user.is_authenticated %}
+  <h2>Edit User Profile</h2>
+  <form action="{{ url_for('users.update', id=current_user.id) }}" method="POST">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+        <div class="form-group">
+            <label for="username">Username:</label>
+            <input type="text" class="form-control" name="username" value={{current_user.username}}>
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" class="form-control" name="email" value={{current_user.email}}>
+        </div>
+        <div class="form-group">
+            <label for="current_password">Current Password</label>
+            <input type="password" class="form-control" name="current_password">
+        </div>
+        <div class="form-group">
+            <label for="new_password">New Password</label>
+            <input type="password" class="form-control" name="new_password">
+            <small class="text-muted">* Please key in your <strong>Current password</strong> before assigning a <strong>New password</strong></small>
+        </div>
+        <button type="submit" class="btn btn-primary">Update</button>
+    </form>
+
+{% endif %}
+
+{% endblock %}
