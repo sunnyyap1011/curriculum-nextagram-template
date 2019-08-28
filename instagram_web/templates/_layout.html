@@ -30,8 +30,11 @@
         <div class="nav-item">
           <a class="nav-link text-white-50" href="/users/{{ current_user.id }}/edit">Edit</a>
         </div>
-        <div class="nav-item">
-          <a class="nav-link text-white-50" href="/users/logout">Log Out</a>
+        <div class="nav-item d-flex">
+          <form action="/users/logout" method="POST">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+            <button type="submit" class="bg-dark text-white-50 border-0 pt-2">Log Out</button>
+          </form>
         </div>
         {% else %}
         <div class="nav-item">
