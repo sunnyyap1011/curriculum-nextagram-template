@@ -7,6 +7,8 @@
 
   <link rel="shortcut icon" href="{{ url_for('static', filename='image/favicon.ico') }}">
 
+  <link href="https://fonts.googleapis.com/css?family=Averia+Serif+Libre|Comfortaa|Major+Mono+Display|Nova+Mono&display=swap" rel="stylesheet">
+
   {% assets "home_css" %}
   <link rel="stylesheet" href="{{ ASSET_URL }}">
   {% endassets %}
@@ -21,31 +23,33 @@
 
 <body>
   <nav class="navbar navbar-dark bg-dark mb-4">
-    <div class="d-flex">
-      <a class="navbar-brand font-weight-bold" href="/">Nextagram</a>
-      {% if current_user.is_authenticated %}
-        <div class="nav-item">
-          <a class="nav-link text-info font-weight-bold" href="/users/{{ current_user.username }}">Hi, {{ current_user.username }}</a>
-        </div>
-        <div class="nav-item">
-          <a class="nav-link text-white-50" href="/users/{{ current_user.id }}/edit">Edit</a>
-        </div>
-        <div class="nav-item d-flex">
-          <form action="/users/logout" method="POST">
-            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-            <button type="submit" class="bg-dark text-white-50 border-0 pt-2">Log Out</button>
-          </form>
-        </div>
-        {% else %}
-        <div class="nav-item">
-          <a class="nav-link text-white-50" href="/users/login">Login</a>
-        </div>
-        <div class="nav-item">
-          <a class="nav-link text-white-50" href="/users/sign_up">Sign Up</a>
-        </div>
-        {% endif %}
+    <div>
+      <a class="navbar-brand app_logo" href="/">Nextagram</a>
     </div>
-
+    <div class="nav_bar_right">
+      {% if current_user.is_authenticated %}
+      <div class="nav-item">
+        <a class="nav-link nav_bar_user_greeting" href="/users/{{ current_user.username }}">
+          Hi, {{ current_user.username }}</a>
+      </div>
+      <div class="nav-item">
+        <a class="nav-link text-white-50" href="/users/{{ current_user.id }}/edit">Edit My Profile</a>
+      </div>
+      <div class="nav-item d-flex">
+        <form action="/users/logout" method="POST">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+          <button type="submit" class="text-white-50 border-0 pt-2 nav-link">Log Out</button>
+        </form>
+      </div>
+      {% else %}
+      <div class="nav-item">
+        <a class="nav-link text-white-50" href="/users/login">Login</a>
+      </div>
+      <div class="nav-item">
+        <a class="nav-link text-white-50" href="/users/sign_up">Sign Up</a>
+      </div>
+      {% endif %}
+    </div>
   </nav>
 
   <div class="container">
