@@ -45,3 +45,16 @@ button.nav-link {
     border-radius: 50%;
 }
 
+
+.preview_image_box {
+    display: none;
+    height: 100%;
+    width: 100%;
+}
+
+.user_images {
+    margin: 20px;
+    border-radius: 10px;
+    max-width: 290px;
+    max-height: 160px;
+}

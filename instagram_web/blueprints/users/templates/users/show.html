@@ -1,8 +1,23 @@
 {% extends "_layout.html" %}
 {% block content %}
 
-{% if current_user.is_authenticated %}
-  <h1>Hi {{ current_user.username }}!</h1>
-{% endif %}
-
+<div class="d-flex flex-column align-items-center">
+  <img class="profile_pic mb-3" src={{ url }} alt="userProfilePicture" />
+  <h3>{{ user.username }}</h3>
+  {% if current_user.is_authenticated and current_user == user %}
+  <button type="button" class="btn btn-primary mb-4" data-toggle="modal" data-target="#exampleModalCenter">
+    Upload Image
+  </button>
+  {% endif %}
+</div>
+  {% include 'images/new.html' %}
+  <div class="container">
+    <div class="row justify-content-between">
+      {% for image in user.images %}
+      <div class="col-sm-12 col-md-6 col-lg-4">
+        <img class="user_images" src="https://sunny-nextagram.s3.amazonaws.com/user_images/{{ image.image_name }}" />
+      </div>
+      {% endfor %}
+    </div>
+  </div>
 {% endblock %}

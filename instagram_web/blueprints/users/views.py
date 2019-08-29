@@ -5,7 +5,6 @@ from werkzeug.security import check_password_hash
 from models.user import User
 from app import s3
 import os
-# from static/images import profile-placeholder
 
 
 users_blueprint = Blueprint('users',
@@ -35,9 +34,14 @@ def create():
 
 
 @users_blueprint.route('/<username>', methods=["GET"])
-@login_required
 def show(username):
-    return render_template('users/show.html')
+    user = User.get_or_none(username=username)
+    if user:
+        filename = user.profile_picture
+        url = f"{os.environ.get('S3_LOCATION')}{filename}"
+    else:
+        return render_template('404.html')
+    return render_template('users/show.html', url=url, user=user)
 
 
 @users_blueprint.route('/', methods=["GET"])
@@ -49,10 +53,7 @@ def index():
 @login_required
 def edit(id):
     filename = current_user.profile_picture
-    if filename:
-        url = f"{os.environ.get('S3_LOCATION')}{filename}"
-    else:
-        url = "https://www.flynz.co.nz/wp-content/uploads/profile-placeholder.png"
+    url = f"{os.environ.get('S3_LOCATION')}{filename}"
     return render_template('users/edit.html', id=current_user.id, url=url)
 
 
@@ -87,7 +88,7 @@ def update(id):
 
         if user.save():
             flash("Your user profile have been updated successfully", 'success')
-            return redirect(url_for('users.show', username=user.username))
+            return redirect(url_for('users.edit', id=current_user.id))
         else:
             flash(f"{user.errors[0]}", 'danger')
             return redirect(url_for('users.edit', id=id))

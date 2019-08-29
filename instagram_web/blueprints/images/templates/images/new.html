@@ -1,0 +1,29 @@
+{% extends "_modal.html" %}
+{% block content %}
+
+<form action="{{ url_for('images.create') }}" method="POST" enctype="multipart/form-data" class="mb-4">
+    <div class="modal-body">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+        <div class="d-flex flex-column align-items-center">
+            <img class="preview_image_box" id="your-image" alt="previewImage" />
+                <label for="image"></label>
+                <input type="file" name="image" accept="image/*" onchange=previewImage(event)>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary">Upload</button>
+    </div>
+</form>
+
+
+<script>
+    let previewImage = function (event) {
+        let preview = document.getElementById('your-image');
+        preview.src = URL.createObjectURL(event.target.files[0]);
+        preview.style.display = "block";
+    }
+</script>
+
+
+{% endblock %}
