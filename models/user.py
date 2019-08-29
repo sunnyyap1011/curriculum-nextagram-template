@@ -8,7 +8,8 @@ class User(BaseModel, UserMixin):
     username = pw.CharField(unique=True)
     email = pw.CharField(unique=True)
     password = pw.CharField()
-    profile_picture = pw.CharField(null=True)
+    profile_picture = pw.CharField()
+
 
     def validate(self):
         duplicate_users = User.get_or_none(User.username == self.username)
@@ -40,3 +41,6 @@ class User(BaseModel, UserMixin):
                 self.errors.append('Password must be at least 6 characters, no more than 15 characters, and must include at least one upper case letter, one lower case letter, and one numeric digit.')
             else:
                 self.password = generate_password_hash(self.password)
+        
+        if not self.id:
+            self.profile_picture = 'profile-placeholder.png'
