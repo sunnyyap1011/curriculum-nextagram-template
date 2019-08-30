@@ -45,11 +45,11 @@ def create_purchase():
     if result.is_success or result.transaction:
         d = Donation(amount=amount, txs_id=result.transaction.id , image=image, donor=donor)
         if d.save():
-            flash(f"Your donation of {m} has been successfully sent to {i.user.username}! \nTransaction_ID: {result.transaction.id}", 'success')
+            flash(f"Thanks {current_user.username}! Your donation of {m} has been successfully sent to {i.user.username}! \nTransaction_ID: {result.transaction.id}", 'success')
 
             message = Mail(
                 from_email='nextagram@example.com',
-                to_emails='sunnyyap1011@gmail.com',
+                to_emails= i.user.email,
                 subject="Donation received for your Image",
                 html_content=f"Hi, {i.user.username}! <br /><br /> Your image as shown below has received a donation of {m} from {current_user.username}. <br /><br /> <img src={os.environ.get('S3_LOCATION')}user_images/{i.image_name} />"
             )
@@ -62,11 +62,11 @@ def create_purchase():
             except Exception as e:
                 print(str(e))
 
-            return redirect(url_for('users.show', username=current_user.username))
+            return redirect(url_for('users.show', username=i.user.username))
         else:
             flash("Something went wrong, it's not saved to the database", 'danger')
             return render_template('donations/new.html')
     else: 
         for x in result.errors.deep_errors:
             flash(f"Erorr: {x.code}: {x.message} ")
-            return render_template('users/show.html', user=i.user)
+            return redirect(url_for('users.show', username=i.user.username))
