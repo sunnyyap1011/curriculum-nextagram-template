@@ -5,19 +5,28 @@
   <img class="profile_pic mb-3" src={{ url }} alt="userProfilePicture" />
   <h3>{{ user.username }}</h3>
   {% if current_user.is_authenticated and current_user == user %}
-  <button type="button" class="btn btn-primary mb-4" data-toggle="modal" data-target="#exampleModalCenter">
+  <button type="button" class="btn btn-primary mb-4" data-toggle="modal" data-target="#uploadImageModal">
     Upload Image
   </button>
   {% endif %}
 </div>
-  {% include 'images/new.html' %}
   <div class="container">
     <div class="row justify-content-between">
       {% for image in user.images %}
       <div class="col-sm-12 col-md-6 col-lg-4">
         <img class="user_images" src="https://sunny-nextagram.s3.amazonaws.com/user_images/{{ image.image_name }}" />
+        {% if current_user.is_authenticated and current_user != user %}
+        <form action={{ url_for('donations.new')}} method="POST" class="d-flex justify-content-center">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+          <input type="hidden" name="image" value={{ image }} />
+          <button type="submit" class="btn-primary" data-toggle="modal" data-target="#paymentModal">Donate</button>
+        </form>
+        {% endif %}
       </div>
       {% endfor %}
     </div>
   </div>
+
+  {% include 'images/new.html' %}
+
 {% endblock %}

@@ -1,0 +1,44 @@
+{% extends "_layout.html" %}
+{% block content %}
+<div class="modal-header">
+    <h5 class="modal-title" id="paymentModalTitle">Payment Gateway</h5>
+</div>
+
+<div class="modal-body">
+    <form id="checkout_form" action={{ url_for('donations.create_purchase') }} method="POST">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+        <input type="hidden" id="client_token" name="client_token" value={{ client_token }}>
+        <input type="hidden" name="payment_method_nonce">
+        <input type="hidden" name="image" value={{ image }} />
+        <label for="amount">How much you want to donate?</label>
+        <div class="d-flex">
+            <div class="mr-2 p-2">USD</div>
+            <input type="tel" name="amount" min="1" value="10" />
+        </div>
+
+        <div id="dropin-container"></div>
+
+        <button id="submit-button" class="btn-primary mt-2">Confirm Donation</button>
+    </form>
+</div>
+
+
+<script>
+    let form = document.querySelector('#checkout_form')
+    let button = document.querySelector('#submit-button');
+    let nonce = document.querySelector('input[name="payment_method_nonce"]');
+
+    braintree.dropin.create({
+        authorization: '{{ client_token }}',
+        container: '#dropin-container'
+    }, function (createErr, instance) {
+        button.addEventListener('click', function () {
+            instance.requestPaymentMethod(function (err, payload) {
+                nonce.value = payload.nonce
+                form.submit()
+            });
+        });
+    });
+</script>
+
+{% endblock %}

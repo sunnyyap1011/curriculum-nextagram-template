@@ -1,13 +1,18 @@
-{% extends "_modal.html" %}
+{% extends "upload_img_modal.html" %}
 {% block content %}
-
+<div class="modal-header">
+    <h5 class="modal-title" id="uploadImageModalTitle">Upload Image</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
 <form action="{{ url_for('images.create') }}" method="POST" enctype="multipart/form-data" class="mb-4">
     <div class="modal-body">
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
         <div class="d-flex flex-column align-items-center">
             <img class="preview_image_box" id="your-image" alt="previewImage" />
-                <label for="image"></label>
-                <input type="file" name="image" accept="image/*" onchange=previewImage(event)>
+            <label for="image"></label>
+            <input type="file" name="image" accept="image/*" onchange=previewImage(event)>
         </div>
     </div>
     <div class="modal-footer">

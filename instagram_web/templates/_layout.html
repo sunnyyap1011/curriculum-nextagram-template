@@ -5,6 +5,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
+  <script src="https://js.braintreegateway.com/web/dropin/1.20.0/js/dropin.min.js"></script>
+  
   <link rel="shortcut icon" href="{{ url_for('static', filename='image/favicon.ico') }}">
 
   <link href="https://fonts.googleapis.com/css?family=Averia+Serif+Libre|Comfortaa|Major+Mono+Display|Nova+Mono&display=swap" rel="stylesheet">
@@ -22,7 +24,7 @@
 </head>
 
 <body>
-  <nav class="navbar navbar-dark bg-dark mb-4">
+  <nav class="navbar navbar-dark bg-dark mb-3">
     <div>
       <a class="navbar-brand app_logo" href="/">Nextagram</a>
     </div>
@@ -56,11 +58,11 @@
     {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
     {% for category, message in messages %}
-    <div class="alert alert-{{category}} alert-dismissable" data-auto-dismiss role="alert">
-      {{message}}
+    <div class="alert alert-{{category}} alert-dismissable align-items-center" data-auto-dismiss role="alert">
       <button type="button" class="close" data-dismiss="alert" aria-label="Close">
         <span aria-hidden="true">&times;</span>
       </button>
+      {{message}}
     </div>
     {% endfor %}
     {% endif %}
