@@ -4,6 +4,9 @@ from models.donation import Donation
 from models.image import Image
 from money.money import Money
 from money.currency import Currency
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import Mail
+import os
 from app import gateway
 
 donations_blueprint = Blueprint('donations',
@@ -43,6 +46,22 @@ def create_purchase():
         d = Donation(amount=amount, txs_id=result.transaction.id , image=image, donor=donor)
         if d.save():
             flash(f"Your donation of {m} has been successfully sent to {i.user.username}! \nTransaction_ID: {result.transaction.id}", 'success')
+
+            message = Mail(
+                from_email='nextagram@example.com',
+                to_emails='sunnyyap1011@gmail.com',
+                subject="Donation received for your Image",
+                html_content=f"Hi, {i.user.username}! <br /><br /> Your image as shown below has received a donation of {m} from {current_user.username}. <br /><br /> <img src={os.environ.get('S3_LOCATION')}user_images/{i.image_name} />"
+            )
+            try:
+                sg = SendGridAPIClient(os.environ.get('SENDGRID_API_KEY'))
+                response = sg.send(message)
+                print(response.status_code)
+                print(response.body)
+                print(response.headers)
+            except Exception as e:
+                print(str(e))
+
             return redirect(url_for('users.show', username=current_user.username))
         else:
             flash("Something went wrong, it's not saved to the database", 'danger')
