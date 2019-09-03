@@ -4,12 +4,21 @@
 <div class="d-flex flex-column align-items-center">
   <img class="profile_pic mb-3" src={{ url }} alt="userProfilePicture" />
   <h3>{{ user.username }}</h3>
+  <div class="row">
+    <p class="m-2">Posts: {{ user.images | length }}</p>
+    <a href="{{ user.username }}/following" class="m-2">Following: {{ user.idols | length }}</a> 
+    <p class="m-2">Followers: {{ user.fans | length }}</p>
+  </div>
   {% if current_user.is_authenticated and current_user == user %}
-  <button type="button" class="btn btn-primary mb-4" data-toggle="modal" data-target="#uploadImageModal">
-    Upload Image
-  </button>
+    <button type="button" class="btn btn-primary m-4" data-toggle="modal" data-target="#uploadImageModal">
+      Upload Image
+    </button>
+  {% elif current_user.is_authenticated and current_user != user %}
+    {% include 'follow_unfollow_btn.html' %}
   {% endif %}
 </div>
+
+
 <div class="container">
   {% if user != current_user and user.status == "private"  %}
 
@@ -28,7 +37,7 @@
     <div class="col-sm-12 col-md-6 col-lg-4">
       <img class="user_images" src="https://sunny-nextagram.s3.amazonaws.com/user_images/{{ image.image_name }}" />
       {% if current_user.is_authenticated and current_user != user %}
-      <form action={{ url_for('donations.new')}} method="POST" class="d-flex justify-content-center">
+      <form action={{ url_for('donations.new') }} method="POST" class="d-flex justify-content-center">
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
         <input type="hidden" name="image" value={{ image }} />
         <button type="submit" class="btn-primary" data-toggle="modal" data-target="#paymentModal">Donate</button>

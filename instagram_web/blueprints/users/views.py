@@ -39,9 +39,9 @@ def show(username):
     if user:
         filename = user.profile_picture
         url = f"{os.environ.get('S3_LOCATION')}{filename}"
+        return render_template('users/show.html', url=url, user=user)
     else:
         return render_template('404.html')
-    return render_template('users/show.html', url=url, user=user)
 
 
 @users_blueprint.route('/', methods=["GET"])

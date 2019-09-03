@@ -59,7 +59,6 @@ def google_login():
 def authorize():
     token = oauth.google.authorize_access_token()
     data = oauth.google.get('https://www.googleapis.com/oauth2/v2/userinfo').json()
-    # do something with the token and profile
 
     user = User.get_or_none(email=data['email'])
 

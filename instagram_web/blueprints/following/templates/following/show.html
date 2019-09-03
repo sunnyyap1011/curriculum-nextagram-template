@@ -1,0 +1,13 @@
+{% extends "_layout.html" %}
+{% block content %}
+
+<h4>Following</h4>
+
+{% for x in user.idols %}
+<div>
+    <p>{{ x.idol.username }}</p>
+</div>
+
+{% endfor %}
+
+{% endblock %}

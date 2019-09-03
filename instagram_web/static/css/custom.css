@@ -112,3 +112,15 @@ button.nav-link {
   font-weight: bold;
   font-family: 'Roboto',arial,sans-serif;
 }
+
+.followBtns {
+    color: #fff;
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.unfollowBtns {
+    color: black;
+    background-color: rgb(195, 201, 207);
+    border-color: rgb(195, 201, 207);
+}
