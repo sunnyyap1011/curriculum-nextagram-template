@@ -9,6 +9,7 @@ class User(BaseModel, UserMixin):
     email = pw.CharField(unique=True)
     password = pw.CharField()
     profile_picture = pw.CharField()
+    status = pw.CharField(null=True)
 
 
     def validate(self):
@@ -44,3 +45,4 @@ class User(BaseModel, UserMixin):
         
         if not self.id:
             self.profile_picture = 'profile-placeholder.png'
+            self.status = 'public'

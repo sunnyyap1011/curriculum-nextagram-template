@@ -63,12 +63,13 @@ def update(id):
     new_email = request.form.get('email')
     current_password = request.form.get('current_password')
     new_password = request.form.get('new_password')
+    profile_status = request.form.get('profile_status')
 
     user = User.get_by_id(id)
 
 
     if current_user == user:
-        if new_username == user.username and new_email == user.email and not current_password and not new_password:
+        if new_username == user.username and new_email == user.email and not current_password and not new_password and profile_status == user.status:
             flash("No change made to the user profile", 'info')
             return redirect(url_for('users.edit', id=id))
 
@@ -85,6 +86,12 @@ def update(id):
             else:
                 flash('Invalid current password', 'danger')
                 return redirect(url_for('users.edit', id=id))
+
+        if profile_status != user.status:
+            if profile_status:
+                user.status = profile_status
+            else: 
+                user.status = "public"
 
         if user.save():
             flash("Your user profile have been updated successfully", 'success')

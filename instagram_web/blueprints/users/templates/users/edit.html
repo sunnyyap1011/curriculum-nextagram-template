@@ -38,6 +38,17 @@
         <small class="text-muted">* Please key in your <strong>Current password</strong> before assigning a <strong>New
                 password</strong></small>
     </div>
+    <div class="form-group">
+        <div class="form-check">
+            {% if current_user.status == "public" %}
+            <input type="checkbox" class="form-check-input" name="profile_status" value="private">
+            <label class="form-check-label" for="profile_status">Make profile private ?</label>
+            {% else %}
+            <input type="checkbox" class="form-check-input" name="profile_status" value="private" checked>
+            <label class="form-check-label" for="profile_status">Make profile private ? <small class="text-muted">(uncheck the box to make your profile Public)</small></label>
+            {% endif %}
+        </div>
+    </div>
     <button type="submit" class="btn btn-primary">Update</button>
 </form>
 

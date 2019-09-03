@@ -13,8 +13,5 @@
     </div>
     <button type="submit" class="btn btn-primary">Sign In</button>
 </form>
-
-<form action="{{ url_for('users.google_login') }}">
-  <button type="submit" class="btn btn-warning">Login via Google Account</button>
-</form>
+  {% include "google_btn.html" %}
 {% endblock %}

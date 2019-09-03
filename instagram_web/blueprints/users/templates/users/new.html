@@ -1,7 +1,7 @@
 {% extends "_layout.html" %}
 {% block content %}
 <h1>Sign Up</h1>
-<form action="{{ url_for('users.create') }}" method="POST">
+<form action="{{ url_for('users.create') }}" method="POST" class="mb-3">
     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
     <div class="form-group">
         <label for="username">Username:</label>
@@ -18,4 +18,5 @@
     </div>
     <button type="submit" class="btn btn-primary">Sign Up</button>
 </form>
+{% include 'google_btn.html' %}
 {% endblock %}
