@@ -31,15 +31,15 @@
 
   {% else %}
 
-  <div class="row justify-content-between">
+  <div class="row col-md-12 bg-light mt-1 mb-3">
     {% for image in user.images %}
-    <div class="col-sm-12 col-md-6 col-lg-4">
+    <div>
       <img class="user_images" src="https://sunny-nextagram.s3.amazonaws.com/user_images/{{ image.image_name }}" />
       {% if current_user.is_authenticated and current_user != user %}
       <form action={{ url_for('donations.new') }} method="POST" class="d-flex justify-content-center">
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
         <input type="hidden" name="image" value={{ image }} />
-        <button type="submit" class="btn-primary" data-toggle="modal" data-target="#paymentModal">Donate</button>
+        <button type="submit" class="btn-info" data-toggle="modal" data-target="#paymentModal">Donate</button>
       </form>
       {% endif %}
     </div>
