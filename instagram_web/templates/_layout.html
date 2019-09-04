@@ -98,6 +98,7 @@
             if (response.success) {
               $(e.target).removeClass("followBtns").addClass("unfollowBtns");
               $(e.target).html("Unfollow");
+              $(`#followers_count-${id}`).text(`${response.followers_count}`)
             }
           }
         })
@@ -111,6 +112,7 @@
             if (response.success) {
               $(e.target).removeClass("unfollowBtns").addClass("followBtns");
               $(e.target).html("Follow");
+              $(`#followers_count-${id}`).text(`${response.followers_count}`)
             }
           }
         }

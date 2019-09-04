@@ -4,13 +4,13 @@
 <div class="d-flex flex-column align-items-center">
   <img class="profile_pic mb-3" src={{ url }} alt="userProfilePicture" />
   <h3>{{ user.username }}</h3>
-  <div class="row">
+  <div class="row mb-3">
     <p class="m-2">Posts: {{ user.images | length }}</p>
-    <a href="{{ user.username }}/following" class="m-2">Following: {{ user.idols | length }}</a> 
-    <p class="m-2">Followers: {{ user.fans | length }}</p>
+    <a href="{{ user.username }}/following" class="m-2">Following: <span id="following_count-{{ user.id }}">{{ user.idols | length }}</span></a> 
+    <a href="{{ user.username }}/followers" class="m-2">Followers: <span id="followers_count-{{ user.id }}">{{ user.fans | length }}</span></a> 
   </div>
   {% if current_user.is_authenticated and current_user == user %}
-    <button type="button" class="btn btn-primary m-4" data-toggle="modal" data-target="#uploadImageModal">
+    <button type="button" class="btn btn-primary m-2" data-toggle="modal" data-target="#uploadImageModal">
       Upload Image
     </button>
   {% elif current_user.is_authenticated and current_user != user %}
@@ -20,9 +20,8 @@
 
 
 <div class="container">
-  {% if user != current_user and user.status == "private"  %}
-
-  <div class="d-flex flex-column align-items-center mt-5">
+  {% if user != current_user and user.status == "private" and current_user not in user.followers %}
+  <div class="d-flex flex-column align-items-center m-3">
     <img
       src="https://images.vexels.com/media/users/3/132074/isolated/preview/0117cb0129593faa02646a8277ca80e3-security-lock-icon-by-vexels.png"
       style="height: 100px; width: 100px;" alt="Private lock" />

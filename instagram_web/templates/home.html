@@ -9,11 +9,15 @@
 
   {% for user in users %}
   <div class="row mb-5 border rounded bg-light p-2">
-    <div class="col" style="width: 200px;">
+    <div class="col">
       <div class="mb-3">
-        <a href="/users/{{ user.id }}" style="font-size: 20px;">@{{ user.username }}</a>
+        <a href="/users/{{ user.username }}" style="font-size: 20px;">@{{ user.username }}</a>
       </div>
-      <img class="mb-3" style="height: 100px;widows: 100px;border-radius: 50%;" src="https://sunny-nextagram.s3.amazonaws.com/{{ user.profile_picture }}" alt="userProfilePicture" />
+      <img class="mb-3" style="height: 100px;width: 100px;border-radius: 50%;" src="https://sunny-nextagram.s3.amazonaws.com/{{ user.profile_picture }}" alt="userProfilePicture" />
+      <div class="d-flex flex-column mb-3">
+        <small>Following: <span id="following_count-{{ user.id }}">{{ user.idols | length }}</span></small>
+        <small>Followers: <span id="followers_count-{{ user.id }}">{{ user.fans | length }}</span></small>
+      </div>
       <div>
       {% if current_user.is_authenticated and current_user != user %}
         {% include 'follow_unfollow_btn.html' %}
@@ -22,11 +26,11 @@
     </div>
     <div class="row col-sm-8 col-md-10">
       {% for image in user.images %}
-      <img style="height: 100px; width: 140px;" class="m-1" src="https://sunny-nextagram.s3.amazonaws.com/user_images/{{ image.image_name }}" />
+      <img style="height: 100px; width: 140px;" class="m-1 border rounded" src="https://sunny-nextagram.s3.amazonaws.com/user_images/{{ image.image_name }}" />
       {% endfor %}
     </div>
   </div>
   {% endfor %}
-  
+
 
 {% endblock %}

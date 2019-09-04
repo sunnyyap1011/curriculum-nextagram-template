@@ -1,13 +1,9 @@
-{% if user.fans %}
-    {% for x in user.fans %}
-        {% if x.fan.id == current_user.id %}
-            <button type="submit" id="followBtn-{{ user.id }}" class="unfollowBtns mb-4">
-            Unfollow
-            </button>
-        {% endif %}
-    {% endfor %}
-{% else %}  
-    <button type="submit" id="followBtn-{{ user.id }}" class="followBtns mb-4">
-        Follow
-    </button>
+{% if user in current_user.following %}
+<button type="submit" id="followBtn-{{ user.id }}" class="unfollowBtns mb-4">
+    Unfollow
+</button>
+{% else %}
+<button type="submit" id="followBtn-{{ user.id }}" class="followBtns mb-4">
+    Follow
+</button>
 {% endif %}

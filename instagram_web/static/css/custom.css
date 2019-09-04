@@ -117,10 +117,12 @@ button.nav-link {
     color: #fff;
     background-color: #007bff;
     border-color: #007bff;
+    border-radius: 5px;
 }
 
 .unfollowBtns {
-    color: black;
-    background-color: rgb(195, 201, 207);
-    border-color: rgb(195, 201, 207);
+    color: #fff;
+    background-color:  rgb(189, 47, 47);
+    border-color: rgb(189, 47, 47);
+    border-radius: 5px;
 }

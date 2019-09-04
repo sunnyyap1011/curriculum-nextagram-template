@@ -1,6 +1,7 @@
 from models.base_model import BaseModel
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin, current_user
+from playhouse.hybrid import hybrid_property
 import re
 import peewee as pw
 
@@ -46,3 +47,15 @@ class User(BaseModel, UserMixin):
         if not self.id:
             self.profile_picture = 'profile-placeholder.png'
             self.status = 'public'
+
+    
+    @hybrid_property
+    def following(self):
+        from models.fan_idol import Fan_Idol
+        return [x.idol for x in Fan_Idol.select().where(Fan_Idol.fan_id == self.id)]
+
+    
+    @hybrid_property
+    def followers(self):
+        from models.fan_idol import Fan_Idol
+        return [x.fan for x in Fan_Idol.select().where(Fan_Idol.idol_id == self.id)]

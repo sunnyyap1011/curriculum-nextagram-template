@@ -1,0 +1,14 @@
+{% extends "_layout.html" %}
+{% block content %}
+
+<h4>Following</h4>
+
+{% for x in user.idols %}
+<div class="row align-items-center m-3">
+    <img class="mr-3" style="height: 70px;width: 70px;border-radius: 50%;" src="https://sunny-nextagram.s3.amazonaws.com/{{ x.idol.profile_picture }}" alt="userProfilePicture" />
+    <a href="/users/{{ x.idol.username }}" style="font-size: 20px;">@{{ x.idol.username }}</a>
+</div>
+
+{% endfor %}
+
+{% endblock %}
