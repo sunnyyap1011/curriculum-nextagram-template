@@ -87,7 +87,7 @@
     }
   });
 
-  $(".unfollowBtns, .followBtns").on("click", function (e) {
+  $(".pendingBtns, .unfollowBtns, .followBtns").on("click", function (e) {
     let id = e.target.id.split("-")[1]
     if ($(`#followBtn-${id}`).html().trim() == "Follow") {
       $.ajax(
@@ -96,8 +96,13 @@
           method: "POST",
           success: function (response) {
             if (response.success) {
-              $(e.target).removeClass("followBtns").addClass("unfollowBtns");
-              $(e.target).html("Unfollow");
+              if (response.status == 'approved') {
+                $(e.target).removeClass("followBtns").addClass("unfollowBtns");
+                $(e.target).html("Unfollow");
+              } else {
+                $(e.target).removeClass("followBtns").addClass("pendingBtns");
+                $(e.target).html("Pending approval");
+              }
               $(`#followers_count-${id}`).text(`${response.followers_count}`)
             }
           }
@@ -110,9 +115,18 @@
           method: "POST",
           success: function (response) {
             if (response.success) {
-              $(e.target).removeClass("unfollowBtns").addClass("followBtns");
+              if ($(`#followBtn-${id}`).html().trim() == "Unfollow"){
+                $(e.target).removeClass("unfollowBtns").addClass("followBtns");
+              } else {
+                $(e.target).removeClass("pendingBtns").addClass("followBtns");
+              }
               $(e.target).html("Follow");
               $(`#followers_count-${id}`).text(`${response.followers_count}`)
+              if (response.is_private) {
+                $(`#picture_container-${id}`).replaceWith(response.private_container)
+              }
+              // userId = $(e.target).closest('.picture_container').attr('data-id')
+              // $(`.picture_container[data-id="${userId}"]`)
             }
           }
         }

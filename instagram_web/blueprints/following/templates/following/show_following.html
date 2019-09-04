@@ -1,14 +1,32 @@
 {% extends "_layout.html" %}
 {% block content %}
 
-<h4>Following</h4>
+<h4 class="mb-4">Following</h4>
 
-{% for x in user.idols %}
+{% for x in user.following %}
 <div class="row align-items-center m-3">
-    <img class="mr-3" style="height: 70px;width: 70px;border-radius: 50%;" src="https://sunny-nextagram.s3.amazonaws.com/{{ x.idol.profile_picture }}" alt="userProfilePicture" />
-    <a href="/users/{{ x.idol.username }}" style="font-size: 20px;">@{{ x.idol.username }}</a>
+    <img class="mr-3" style="height: 70px;width: 70px;border-radius: 50%;" src="https://sunny-nextagram.s3.amazonaws.com/{{ x.profile_picture }}" alt="userProfilePicture" />
+    <a href="/users/{{ x.username }}" style="font-size: 20px;">@{{ x.username }}</a>
 </div>
 
 {% endfor %}
+
+<h5>Pending Approval</h5>
+
+{% if user.following_request %}
+
+    {% for x in user.following_request %}
+        <div class="row align-items-center m-3">
+            <img class="mr-3" style="height: 70px;width: 70px;border-radius: 50%;" src="https://sunny-nextagram.s3.amazonaws.com/{{ x.profile_picture }}" alt="userProfilePicture" />
+            <a href="/users/{{ x.username }}" style="font-size: 20px;">@{{ x.username }}</a>
+        </div>
+    {% endfor %}
+
+{% else %}
+    <div class="row align-items-center m-4">
+        <p class="text-muted">No new following request</p>
+    </div>
+
+{% endif %}
 
 {% endblock %}

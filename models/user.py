@@ -52,10 +52,28 @@ class User(BaseModel, UserMixin):
     @hybrid_property
     def following(self):
         from models.fan_idol import Fan_Idol
-        return [x.idol for x in Fan_Idol.select().where(Fan_Idol.fan_id == self.id)]
+        return [x.idol for x in Fan_Idol.select().where(Fan_Idol.fan_id == self.id).where(Fan_Idol.is_approved == True)]
 
     
     @hybrid_property
     def followers(self):
         from models.fan_idol import Fan_Idol
-        return [x.fan for x in Fan_Idol.select().where(Fan_Idol.idol_id == self.id)]
+        return [x.fan for x in Fan_Idol.select().where(Fan_Idol.idol_id == self.id).where(Fan_Idol.is_approved == True)]
+
+
+    @hybrid_property
+    def following_request(self):
+        from models.fan_idol import Fan_Idol
+        return [x.idol for x in Fan_Idol.select().where(Fan_Idol.fan_id == self.id).where(Fan_Idol.is_approved == False)]
+
+    
+    @hybrid_property
+    def followers_request(self):
+        from models.fan_idol import Fan_Idol
+        return [x.fan for x in Fan_Idol.select().where(Fan_Idol.idol_id == self.id).where(Fan_Idol.is_approved == False)]
+
+    
+    @hybrid_property
+    def ordered_images(self):
+        from models.image import Image
+        return [x for x in Image.select().where(Image.user_id == self.id).order_by(Image.created_at.desc())]

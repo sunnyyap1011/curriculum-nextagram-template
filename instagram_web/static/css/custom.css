@@ -126,3 +126,10 @@ button.nav-link {
     border-color: rgb(189, 47, 47);
     border-radius: 5px;
 }
+
+.pendingBtns {
+    color: black;
+    background-color: sandybrown;
+    border-color: sandybrown;
+    border-radius: 5px;
+}

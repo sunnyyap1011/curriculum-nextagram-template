@@ -4,10 +4,10 @@
 <div class="d-flex flex-column align-items-center">
   <img class="profile_pic mb-3" src={{ url }} alt="userProfilePicture" />
   <h3>{{ user.username }}</h3>
-  <div class="row mb-3">
+  <div class="row">
     <p class="m-2">Posts: {{ user.images | length }}</p>
-    <a href="{{ user.username }}/following" class="m-2">Following: <span id="following_count-{{ user.id }}">{{ user.idols | length }}</span></a> 
-    <a href="{{ user.username }}/followers" class="m-2">Followers: <span id="followers_count-{{ user.id }}">{{ user.fans | length }}</span></a> 
+    <a href="{{ user.username }}/following" class="m-2">Following: <span id="following_count-{{ user.id }}">{{ user.following | length }}</span></a> 
+    <a href="{{ user.username }}/followers" class="m-2">Followers: <span id="followers_count-{{ user.id }}">{{ user.followers | length }}</span></a> 
   </div>
   {% if current_user.is_authenticated and current_user == user %}
     <button type="button" class="btn btn-primary m-2" data-toggle="modal" data-target="#uploadImageModal">
@@ -21,30 +21,25 @@
 
 <div class="container">
   {% if user != current_user and user.status == "private" and current_user not in user.followers %}
-  <div class="d-flex flex-column align-items-center m-3">
-    <img
-      src="https://images.vexels.com/media/users/3/132074/isolated/preview/0117cb0129593faa02646a8277ca80e3-security-lock-icon-by-vexels.png"
-      style="height: 100px; width: 100px;" alt="Private lock" />
-    <div class="text-muted">This account is private.</div>
-    <div class="text-muted">Please follow to see their photos and videos.</div>
-  </div>
-
+    <div class="d-flex flex-column align-items-center m-3" id="private_container-{{ user.id }}">
+      {% include 'private_container.html' %}
+    </div>
   {% else %}
 
-  <div class="row col-md-12 bg-light mt-1 mb-3">
-    {% for image in user.images %}
-    <div>
-      <img class="user_images" src="https://sunny-nextagram.s3.amazonaws.com/user_images/{{ image.image_name }}" />
-      {% if current_user.is_authenticated and current_user != user %}
-      <form action={{ url_for('donations.new') }} method="POST" class="d-flex justify-content-center">
-        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
-        <input type="hidden" name="image" value={{ image }} />
-        <button type="submit" class="btn-info" data-toggle="modal" data-target="#paymentModal">Donate</button>
-      </form>
-      {% endif %}
+    <div id="picture_container-{{ user.id }}" class="row col-md-12 bg-light mt-1 mb-3">
+      {% for image in user.ordered_images %}
+      <div>
+        <img class="user_images" src="https://sunny-nextagram.s3.amazonaws.com/user_images/{{ image.image_name }}" />
+        {% if current_user.is_authenticated and current_user != user %}
+        <form action={{ url_for('donations.new') }} method="POST" class="d-flex justify-content-center">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+          <input type="hidden" name="image" value={{ image }} />
+          <button type="submit" class="btn-info" data-toggle="modal" data-target="#paymentModal">Donate</button>
+        </form>
+        {% endif %}
+      </div>
+      {% endfor %}
     </div>
-    {% endfor %}
-  </div>
 
   {% endif %}
 

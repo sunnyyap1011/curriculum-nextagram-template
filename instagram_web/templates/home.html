@@ -24,11 +24,18 @@
       {% endif %}
       </div>
     </div>
-    <div class="row col-sm-8 col-md-10">
-      {% for image in user.images %}
-      <img style="height: 100px; width: 140px;" class="m-1 border rounded" src="https://sunny-nextagram.s3.amazonaws.com/user_images/{{ image.image_name }}" />
-      {% endfor %}
-    </div>
+      {% if user != current_user and user.status == "private" and current_user not in user.followers %}
+        <div class="row col-sm-8 col-md-10 d-flex flex-column justify-content-center align-items-center" id="private_container-{{ user.id }}">
+          {% include 'private_container.html' %}
+        </div>
+      {% else %}
+        <div id="picture_container-{{ user.id }}" class="row col-sm-8 col-md-10">
+          {% for image in user.ordered_images %}
+          <img style="height: 100px; width: 140px;" class="m-1 border rounded" src="https://sunny-nextagram.s3.amazonaws.com/user_images/{{ image.image_name }}" />
+          {% endfor %}
+        </div>
+      {% endif %}
+
   </div>
   {% endfor %}
 

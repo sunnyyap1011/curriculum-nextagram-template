@@ -2,6 +2,10 @@
 <button type="submit" id="followBtn-{{ user.id }}" class="unfollowBtns mb-4">
     Unfollow
 </button>
+{% elif user in current_user.following_request %}
+<button type="submit" id="followBtn-{{ user.id }}" class="pendingBtns mb-4">
+    Pending approval
+</button>
 {% else %}
 <button type="submit" id="followBtn-{{ user.id }}" class="followBtns mb-4">
     Follow

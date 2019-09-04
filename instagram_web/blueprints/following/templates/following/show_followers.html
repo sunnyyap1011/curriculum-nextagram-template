@@ -1,14 +1,34 @@
 {% extends "_layout.html" %}
 {% block content %}
 
-<h4>Followers</h4>
+<h4 class="mb-4">Followers</h4>
 
-{% for x in user.fans %}
-<div class="row align-items-center m-3">
-    <img class="mr-3" style="height: 70px;width: 70px;border-radius: 50%;" src="https://sunny-nextagram.s3.amazonaws.com/{{ x.fan.profile_picture }}" alt="userProfilePicture" />
-    <a href="/users/{{ x.fan.username }}" style="font-size: 20px;">@{{ x.fan.username }}</a>
+{% for x in user.followers %}
+<div class="row align-items-center m-4">
+    <img class="mr-3" style="height: 70px;width: 70px;border-radius: 50%;" src="https://sunny-nextagram.s3.amazonaws.com/{{ x.profile_picture }}" alt="userProfilePicture" />
+    <a href="/users/{{ x.username }}" style="font-size: 20px;">@{{ x.username }}</a>
 </div>
-
 {% endfor %}
+
+<h5>Pending Approval</h5>
+
+{% if user.followers_request %}
+    {% for x in user.followers_request %}
+        <div class="row align-items-center m-3">
+            <img class="mr-3" style="height: 70px;width: 70px;border-radius: 50%;" src="https://sunny-nextagram.s3.amazonaws.com/{{ x.profile_picture }}" alt="userProfilePicture" />
+            <a href="/users/{{ x.username }}" style="font-size: 20px;">@{{ x.username }}</a>
+            {% if user == current_user %}
+            <form action={{ url_for('users.approve_followers', username=x.username) }} method="POST" class="ml-4">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+                <button type="submit" class="btn-success">Approve request</button>
+            </form>
+            {% endif %}
+        </div>
+    {% endfor %}
+{% else %}
+    <div class="row align-items-center m-4">
+        <p class="text-muted">No new followers request</p>
+    </div>
+{% endif %}
 
 {% endblock %}
