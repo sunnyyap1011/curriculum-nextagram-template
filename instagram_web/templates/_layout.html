@@ -4,6 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
 
   <script src="https://js.braintreegateway.com/web/dropin/1.20.0/js/dropin.min.js"></script>
 
@@ -76,64 +77,5 @@
   </div>
 
 </body>
-
-<script>
-  const csrf_token = "{{ csrf_token() }}";
-  $.ajaxSetup({
-    beforeSend: function (xhr, settings) {
-      if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
-        xhr.setRequestHeader("X-CSRFToken", csrf_token);
-      }
-    }
-  });
-
-  $(".pendingBtns, .unfollowBtns, .followBtns").on("click", function (e) {
-    let id = e.target.id.split("-")[1]
-    if ($(`#followBtn-${id}`).html().trim() == "Follow") {
-      $.ajax(
-        {
-          url: `/following/follow/${id}`,
-          method: "POST",
-          success: function (response) {
-            if (response.success) {
-              if (response.status == 'approved') {
-                $(e.target).removeClass("followBtns").addClass("unfollowBtns");
-                $(e.target).html("Unfollow");
-              } else {
-                $(e.target).removeClass("followBtns").addClass("pendingBtns");
-                $(e.target).html("Pending approval");
-              }
-              $(`#followers_count-${id}`).text(`${response.followers_count}`)
-            }
-          }
-        })
-    }
-    else {
-      $.ajax(
-        {
-          url: `/following/unfollow/${id}`,
-          method: "POST",
-          success: function (response) {
-            if (response.success) {
-              if ($(`#followBtn-${id}`).html().trim() == "Unfollow"){
-                $(e.target).removeClass("unfollowBtns").addClass("followBtns");
-              } else {
-                $(e.target).removeClass("pendingBtns").addClass("followBtns");
-              }
-              $(e.target).html("Follow");
-              $(`#followers_count-${id}`).text(`${response.followers_count}`)
-              if (response.is_private) {
-                $(`#picture_container-${id}`).replaceWith(response.private_container)
-              }
-              // userId = $(e.target).closest('.picture_container').attr('data-id')
-              // $(`.picture_container[data-id="${userId}"]`)
-            }
-          }
-        }
-      )
-    }
-  })
-
-</script>
 
 </html>

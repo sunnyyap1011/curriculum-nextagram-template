@@ -61,6 +61,7 @@ def edit(id):
 def update(id):
     new_username = request.form.get('username')
     new_email = request.form.get('email')
+    new_description = request.form.get('description')
     current_password = request.form.get('current_password')
     new_password = request.form.get('new_password')
     profile_status = request.form.get('profile_status')
@@ -73,11 +74,14 @@ def update(id):
             flash("No change made to the user profile", 'info')
             return redirect(url_for('users.edit', id=id))
 
+        if new_username != user.username:
+            user.username = new_username
+
         if new_email != user.email:
             user.email = new_email
 
-        if new_username != user.username:
-            user.username = new_username
+        if new_description != user.description:
+            user.description = new_description
 
         if current_password or new_password:
             if check_password_hash(user.password, current_password):

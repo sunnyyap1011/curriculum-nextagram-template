@@ -17,6 +17,7 @@ def new():
 @login_required
 def create():
     file = request.files.get('image')
+    caption = request.files.get('caption')
     
     if file:
         try:
@@ -30,7 +31,8 @@ def create():
                 }
             )
 
-            i = Image(image_name=file.filename, user=current_user.id)
+            i = Image(image_name=file.filename, user=current_user.id, caption=caption)
+
             if i.save():
                 flash("Image uploaded successfully", 'success')
                 return redirect(url_for('users.show', username=current_user.username))

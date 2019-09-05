@@ -15,8 +15,8 @@
       </div>
       <img class="mb-3" style="height: 100px;width: 100px;border-radius: 50%;" src="https://sunny-nextagram.s3.amazonaws.com/{{ user.profile_picture }}" alt="userProfilePicture" />
       <div class="d-flex flex-column mb-3">
-        <small>Following: <span id="following_count-{{ user.id }}">{{ user.idols | length }}</span></small>
         <small>Followers: <span id="followers_count-{{ user.id }}">{{ user.fans | length }}</span></small>
+        <small>Following: <span id="following_count-{{ user.id }}">{{ user.idols | length }}</span></small>
       </div>
       <div>
       {% if current_user.is_authenticated and current_user != user %}
