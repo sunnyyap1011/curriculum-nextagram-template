@@ -17,7 +17,7 @@ def new():
 @login_required
 def create():
     file = request.files.get('image')
-    caption = request.files.get('caption')
+    caption = request.form.get('caption')
     
     if file:
         try:
