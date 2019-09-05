@@ -3,6 +3,7 @@ from instagram_web.blueprints.users.views import users_blueprint
 from flask_login import login_required, current_user
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
+import urllib.parse
 import os
 from models.user import User
 from models.fan_idol import Fan_Idol
@@ -21,11 +22,13 @@ def create(id):
         f = Fan_Idol(idol=idol.id, fan=current_user.id, is_approved=True)
     else:
         f = Fan_Idol(idol=idol.id, fan=current_user.id, is_approved=False)
+        encode_username = urllib.parse.quote(idol.username)
+
         message = Mail(
             from_email='nextagram@example.com',
             to_emails= idol.email,
             subject=f"Following request from {current_user.username}",
-            html_content=f"Hi, {idol.username}! <br /><br /> Click on the link below to approve the follow request <br /> http://localhost:5000/users/{idol.username}/followers "
+            html_content=f"Hi, {idol.username}! <br /><br /> Click on the link below to approve the follow request <br /> http://localhost:5000/users/{encode_username}/followers "
         )
         try:
             sg = SendGridAPIClient(os.environ.get('SENDGRID_API_KEY'))
