@@ -1,0 +1,1 @@
+web: migrate; gunicorn start:app --preload
