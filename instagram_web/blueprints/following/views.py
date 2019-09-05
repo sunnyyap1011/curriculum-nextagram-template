@@ -28,7 +28,7 @@ def create(id):
             from_email='nextagram@example.com',
             to_emails= idol.email,
             subject=f"Following request from {current_user.username}",
-            html_content=f"Hi, {idol.username}! <br /><br /> Click on the link below to approve the follow request <br /> http://localhost:5000/users/{encode_username}/followers "
+            html_content=f"Hi, {idol.username}! <br /><br /> Click on the link below to approve the follow request <br /> {request.url_root}users/{encode_username}/followers "
         )
         try:
             sg = SendGridAPIClient(os.environ.get('SENDGRID_API_KEY'))
