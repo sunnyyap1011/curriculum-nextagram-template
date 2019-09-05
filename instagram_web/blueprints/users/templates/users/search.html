@@ -1,0 +1,24 @@
+{% extends "_layout.html" %}
+{% block content %}
+
+    <h3>Search result:</h3>
+
+    {% if result %}
+        {% for user in result  %}
+                <div class="d-flex align-items-center m-4">
+                    <div style="width: 250px" class="mb-4">
+                        <a href="/users/{{ user.username }}" style="font-size: 20px;">
+                            <img class="mr-3" style="height: 70px;width: 70px;border-radius: 50%;" src="https://sunny-nextagram.s3.amazonaws.com/{{ user.profile_picture }}" alt="userProfilePicture" />
+                            @{{ user.username }}
+                        </a>
+                    </div>
+                    <div>
+                        {% include 'follow_unfollow_btn.html' %}
+                    </div>
+                </div>
+        {% endfor %}
+    {% else %}
+        <h2>No result found</h2>
+    {% endif %}
+
+{% endblock %}

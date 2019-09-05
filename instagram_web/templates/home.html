@@ -1,11 +1,23 @@
 {% extends "_layout.html" %}
 {% block title %}
-  Homepage
 {% endblock %}
 {% block header %}
 {% endblock %}
 {% block content %}
-<h1 class="mb-4">Homepage</h1>
+
+<div class="d-flex align-items-center justify-content-between mb-3">
+  
+  <h3 class="">Homepage</h3>
+  
+  <form action={{ url_for('users.search') }} class="form-inline ml-3" method="POST">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+    <div class="d-flex">
+      <input class="form-control mr-sm-1" type="search" name="search" placeholder="Search" aria-label="Search">
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    </div>
+  </form>
+
+</div>
 
   {% for user in users %}
   <div class="row mb-5 border rounded bg-light p-2">

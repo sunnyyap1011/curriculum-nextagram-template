@@ -142,3 +142,14 @@ def upload_img():
     else:
         flash("Please select a picture to upload", 'danger')
         return redirect(url_for('users.edit', id=current_user.id))
+
+
+@users_blueprint.route('/search', methods=['GET','POST'])
+def search():
+    target = request.form.get('search')
+
+    if not target:
+        result = [u for u in User.select()] 
+    else:
+        result = [u for u in User.select().where(User.username.contains(target))]
+    return render_template('users/search.html', result=result)

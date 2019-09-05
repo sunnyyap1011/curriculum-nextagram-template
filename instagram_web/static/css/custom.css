@@ -15,6 +15,11 @@ h2 {
 
 .navbar {
     font-family: Nova Mono;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    overflow: hidden;
+    z-index:99;
 }
 
 .nav-link:hover {
@@ -39,13 +44,24 @@ button.nav-link {
     margin-right: 0;
 }
 
+@media screen and (max-width: 590px){
+    .main_content {
+        margin-top: 130px;
+    }
+}
+
+@media screen and (min-width: 591px){
+    .main_content {
+        margin-top: 70px;
+    }
+}
+
 .profile_pic {
     height: 150px; 
     width: 150px; 
     border: solid black 1px;
-    border-radius: 50%;
+    border-radius: 40%;
 }
-
 
 .preview_image_box {
     display: none;
