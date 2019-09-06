@@ -71,18 +71,6 @@ def show_followers(username):
     user = User.get(username=username)
     return render_template('following/show_followers.html', user=user)
 
-@users_blueprint.route('<username>/approve_followers', methods=['POST'])
-@login_required
-def approve_followers(username):
-    user = User.get(username=username)
-    f = Fan_Idol.get(idol=current_user.id, fan=user.id)
-    
-    f.is_approved = True
-
-    if f.save():
-        flash(f"You have approved the following request from {user.username} ", 'success')
-        return redirect(url_for('users.show_followers', username=current_user.username))
-
 
 @following_blueprint.route('/unfollow/<id>', methods=['POST'])
 def destroy(id):
@@ -109,3 +97,27 @@ def destroy(id):
                     'success': False
                 })
 
+
+@users_blueprint.route('approve_followers/<username>', methods=['POST'])
+@login_required
+def approve_followers(username):
+    user = User.get(username=username)
+    x = Fan_Idol.get(idol=current_user.id, fan=user.id)
+    
+    x.is_approved = True
+
+    if x.save():
+        flash(f"You have approved the following request from {user.username} ", 'success')
+        return redirect(url_for('users.show_followers', username=current_user.username))
+
+
+@users_blueprint.route('reject_followers/<username>', methods=['POST'])
+@login_required
+def reject_followers(username):
+    user = User.get(username=username)
+
+    f = Fan_Idol.get(idol=current_user.id, fan=user.id)
+    
+    if f.delete_instance():
+        flash(f"You have reject request from {user.username} ", 'danger')
+        return redirect(url_for('users.show_followers', username=current_user.username))

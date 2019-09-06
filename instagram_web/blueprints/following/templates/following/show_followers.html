@@ -4,9 +4,11 @@
 <h4 class="mb-4">Followers</h4>
 
 {% for x in user.followers %}
-<div class="row align-items-center m-4">
-    <img class="mr-3" style="height: 70px;width: 70px;border-radius: 50%;" src="https://sunny-nextagram.s3.amazonaws.com/{{ x.profile_picture }}" alt="userProfilePicture" />
-    <a href="/users/{{ x.username }}" style="font-size: 20px;">@{{ x.username }}</a>
+<div class="row align-items-center my-4 ml-1 p-2 bg-light">
+    <a href="/users/{{ x.username }}" style="font-size: 20px;">
+        <img class="mr-3" style="height: 70px;width: 70px;border-radius: 50%;" src="https://sunny-nextagram.s3.amazonaws.com/{{ x.profile_picture }}" alt="userProfilePicture" />
+        @{{ x.username }}
+    </a>
 </div>
 {% endfor %}
 
@@ -14,14 +16,22 @@
 
 {% if user.followers_request %}
     {% for x in user.followers_request %}
-        <div class="row align-items-center m-3">
-            <img class="mr-3" style="height: 70px;width: 70px;border-radius: 50%;" src="https://sunny-nextagram.s3.amazonaws.com/{{ x.profile_picture }}" alt="userProfilePicture" />
-            <a href="/users/{{ x.username }}" style="font-size: 20px;">@{{ x.username }}</a>
+        <div class="row align-items-center justify-content-between my-4 ml-1 p-2 bg-light">
+            <a href="/users/{{ x.username }}" style="font-size: 20px;">
+                <img class="mr-3" style="height: 70px;width: 70px;border-radius: 50%;" src="https://sunny-nextagram.s3.amazonaws.com/{{ x.profile_picture }}" alt="userProfilePicture" />
+                @{{ x.username }}
+            </a>
             {% if user == current_user %}
-            <form action={{ url_for('users.approve_followers', username=x.username) }} method="POST" class="ml-4">
-                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
-                <button type="submit" class="btn-success">Approve request</button>
-            </form>
+            <div class="d-flex">
+                <form action={{ url_for('users.approve_followers', username=x.username) }} method="POST" class="ml-4">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+                    <button type="submit" class="btn-success">Approve request</button>
+                </form>
+                <form action={{ url_for('users.reject_followers', username=x.username) }} method="POST" class="ml-4">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+                    <button type="submit" class="btn-danger">Reject</button>
+                </form>
+            </div>
             {% endif %}
         </div>
     {% endfor %}

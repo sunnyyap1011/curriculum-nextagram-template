@@ -1,7 +1,10 @@
 from models.base_model import BaseModel
 from werkzeug.security import generate_password_hash, check_password_hash
+from flask import request
 from flask_login import UserMixin, current_user
 from playhouse.hybrid import hybrid_property
+from config import Config
+import os
 import re
 import peewee as pw
 
@@ -48,6 +51,11 @@ class User(BaseModel, UserMixin):
         if not self.id:
             self.profile_picture = 'profile-placeholder.png'
             self.status = 'public'
+
+    
+    @hybrid_property
+    def profile_picture_path(self):
+        return Config.S3_LOCATION + self.profile_picture
 
     
     @hybrid_property
