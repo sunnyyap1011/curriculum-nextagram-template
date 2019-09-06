@@ -7,7 +7,7 @@ from models.base_model import db
 from config import Config
 import boto3, botocore
 import braintree
-
+from flask_jwt_extended import JWTManager
 
 web_dir = os.path.join(os.path.dirname(
     os.path.abspath(__file__)), 'instagram_web')
@@ -20,6 +20,8 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 
 csrf = CSRFProtect(app)
+
+jwt = JWTManager(app)
 
 s3 = boto3.client(
    "s3",
