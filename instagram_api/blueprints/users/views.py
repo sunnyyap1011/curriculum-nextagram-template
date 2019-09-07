@@ -57,7 +57,9 @@ def show(username):
         response = {
             'id': user.id,
             'username': user.username,
-            'profile_picture': user.profile_picture_path
+            'profile_picture': user.profile_picture_path,
+            'description': user.description,
+            'status': user.status
         }
     else:
         response = {
@@ -74,7 +76,9 @@ def me():
     return jsonify({
         "id": current_user.id,
         "username": current_user.username,
-        "profile_picture": current_user.profile_picture_path
+        "profile_picture": current_user.profile_picture_path,
+        'description': current_user.description,
+        'status': current_user.status
     })
 
 
@@ -108,4 +112,16 @@ def login():
                 "status": "fail"
                 })
 
-    
+
+@users_api_blueprint.route('/check_name', methods=['GET'])
+def check_name():
+    if User.get_or_none(User.username == request.args.get('username')) != None:
+        return jsonify({
+            "exists": True,
+            "valid": False
+        })
+    else:
+        return jsonify({
+            "exists": False,
+            "valid": True
+        })
