@@ -13,7 +13,7 @@ class User(BaseModel, UserMixin):
     email = pw.CharField(unique=True)
     password = pw.CharField()
     profile_picture = pw.CharField()
-    description = pw.TextField(null=True, default='')
+    description = pw.TextField(null=True)
     status = pw.CharField(null=True)
 
 

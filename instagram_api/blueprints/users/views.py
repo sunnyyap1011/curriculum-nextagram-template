@@ -15,7 +15,9 @@ def index():
     response = [
         {'id': user.id,
          'username': user.username,
-         'profile_picture': user.profile_picture_path
+         'profile_picture': user.profile_picture_path,
+         'description': user.description,
+         'status': user.status
         } 
         for user in User.select()
         ]
